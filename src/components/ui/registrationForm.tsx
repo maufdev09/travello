@@ -1,15 +1,15 @@
 "use client";
 
-import { Field, FieldGroup, FieldLabel } from "./field";
+import { Field, FieldDescription, FieldGroup, FieldLabel } from "./field";
 import { Input } from "./input";
 import { Button } from "./button";
 import { useActionState } from "react";
 import { registerTourist } from "@/services/auth/register-tourist";
-import { log } from "node:console";
+import { getFieldError } from "@/lib/getErrorFields";
 
 function RegistrationForm() {
-  const [state, formAction, isPending] = useActionState( registerTourist, null);
-console.log(state);
+  const [state, formAction, isPending] = useActionState(registerTourist, null);
+  console.log(state);
   return (
     <div>
       <form action={formAction}>
@@ -25,6 +25,12 @@ console.log(state);
               placeholder="Enter your full name"
               required
             />
+
+            {getFieldError("name", state) && (
+              <FieldDescription className=" text-red-500 text-sm mt-1">
+                {getFieldError("name", state)}
+              </FieldDescription>
+            )}
           </Field>
 
           <Field>
@@ -36,6 +42,12 @@ console.log(state);
               placeholder="Enter your email"
               required
             />
+
+            {getFieldError("email", state) && (
+              <FieldDescription className=" text-red-500 text-sm mt-1">
+                {getFieldError("email", state)}
+              </FieldDescription>
+            )}
           </Field>
 
           <Field>
@@ -47,6 +59,29 @@ console.log(state);
               placeholder="Enter your password"
               required
             />
+
+            {getFieldError("password", state) && (
+              <FieldDescription className=" text-red-500 text-sm mt-1">
+                {getFieldError("password", state)}
+              </FieldDescription>
+            )}
+          </Field>
+
+          <Field>
+            <FieldLabel htmlFor="confirmPassword">Confirm Password</FieldLabel>
+            <Input
+              type="confirmPassword"
+              id="confirmPassword"
+              name="confirmPassword"
+              placeholder="Confirm your password"
+              required
+            />
+
+            {getFieldError("confirmPassword", state) && (
+              <FieldDescription className=" text-red-500 text-sm mt-1">
+                {getFieldError("confirmPassword", state)}
+              </FieldDescription>
+            )}
           </Field>
           <Button type="submit" disabled={isPending}>
             {isPending ? "Registering..." : "Create Account"}

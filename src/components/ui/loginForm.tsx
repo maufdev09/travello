@@ -1,20 +1,21 @@
 "use client";
 
-import { Field, FieldGroup, FieldLabel } from "./field";
+import { Field, FieldDescription, FieldGroup, FieldLabel } from "./field";
 import { Input } from "./input";
 import { Button } from "./button";
 import { useActionState } from "react";
 import { loginUser } from "@/services/auth/loginUser";
+import { getFieldError } from "@/lib/getErrorFields";
 
-function  LoginForm() {
-  const [state, formAction, isPending] = useActionState( loginUser, null);
-console.log(state);
+function LoginForm() {
+  const [state, formAction, isPending] = useActionState(loginUser, null);
+
+  console.log(state);
   return (
     <div>
       <form action={formAction}>
         <FieldGroup>
           <div className=" grid grid-cols-1 md:grid-cols-2 gap-4"></div>
-
 
           <Field>
             <FieldLabel htmlFor="email">Email Address</FieldLabel>
@@ -25,6 +26,12 @@ console.log(state);
               placeholder="Enter your email"
               required
             />
+
+            {getFieldError("email", state) && (
+              <FieldDescription className=" text-red-500 text-sm mt-1">
+                {getFieldError("email", state)}
+              </FieldDescription>
+            )}
           </Field>
 
           <Field>
@@ -36,6 +43,12 @@ console.log(state);
               placeholder="Enter your password"
               required
             />
+
+            {getFieldError("password", state) && (
+              <FieldDescription className=" text-red-500 text-sm mt-1">
+                {getFieldError("password", state)}
+              </FieldDescription>
+            )}
           </Field>
           <Button type="submit" disabled={isPending}>
             {isPending ? "Logging in..." : "Login"}
