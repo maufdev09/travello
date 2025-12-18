@@ -7,13 +7,19 @@ import { useActionState } from "react";
 import { loginUser } from "@/services/auth/loginUser";
 import { getFieldError } from "@/lib/getErrorFields";
 
-function LoginForm() {
+function LoginForm({ redirect }: { redirect?: string }) {
   const [state, formAction, isPending] = useActionState(loginUser, null);
 
   console.log(state);
   return (
     <div>
       <form action={formAction}>
+{
+        redirect && (
+          <input type="hidden" name="redirect" value={redirect} />
+        )
+}
+
         <FieldGroup>
           <div className=" grid grid-cols-1 md:grid-cols-2 gap-4"></div>
 
