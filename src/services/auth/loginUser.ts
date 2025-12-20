@@ -6,7 +6,11 @@ import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import z from "zod";
 import jwt, { JwtPayload } from "jsonwebtoken";
-import { th } from "framer-motion/client";
+import {
+  getDefaultDashboardRoute,
+  isValidRedirectForRole,
+} from "@/lib/authUtils";
+import { th } from "zod/locales";
 
 const loginValidationSchema = z.object({
   email: z.email("Invalid email address"),
@@ -23,12 +27,12 @@ export async function loginUser(
     const redirectTo = formData.get("redirect") as string | null;
     let accessTokenObject: null | any = null;
     let refreshTokenObject: null | any = null;
-    const loginDtata = {
+    const loginData = {
       email: formData.get("email") as string,
       password: formData.get("password") as string,
     };
 
-    const validatedFields = loginValidationSchema.safeParse(loginDtata);
+    const validatedFields = loginValidationSchema.safeParse(loginData);
 
     if (!validatedFields.success) {
       return {
@@ -42,13 +46,13 @@ export async function loginUser(
 
     const res = await fetch("http://localhost:5000/api/v1/auth/login", {
       method: "POST",
-      body: JSON.stringify(loginDtata),
+      body: JSON.stringify(loginData),
       headers: {
         "Content-Type": "application/json",
       },
     });
 
-    const result = await res.json();
+      const result = await res.json();
 
     const setCookieHeaders = res.headers.getSetCookie();
 
@@ -103,33 +107,32 @@ export async function loginUser(
     if (typeof verifiedToken === "string") {
       throw new Error("Invalid token");
     }
-    const getDefaultDashboardRoute = (role: string): string => {
-      if (role === "ADMIN") {
-        return "/admin/dashboard";
-      }
-      if (role === "GUIDE") {
-        return "/guide/dashboard";
-      }
-
-      if (role === "TOURIST") {
-        return "/dashboard";
-      }
-      return "/";
-    };
 
     const userRole: any = verifiedToken.role;
 
-    const redirectPath = redirectTo
-      ? redirectTo.toString()
-      : getDefaultDashboardRoute(userRole);
+    if (!result.success) {
+      throw new Error(result.message || "Login failed");
+      
+    }
 
-    redirect(redirectPath);
+    if (redirectTo) {
+      const requestedPath = redirectTo.toString();
+      if (isValidRedirectForRole(requestedPath, userRole)) {
+        redirect(requestedPath);
+      } else {
+        redirect(getDefaultDashboardRoute(userRole));
+      }
+    }else{
+      redirect(getDefaultDashboardRoute(userRole));
+    }
+
+ 
   } catch (error: any) {
     if (error?.digest?.startsWith("NEXT_REDIRECT")) {
       throw error;
     }
 
-    console.error("Registration failed:", error);
+    console.error("login failed:", error);
     return { error: "Login failed. Please try again." };
   }
 }

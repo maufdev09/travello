@@ -2,19 +2,21 @@
 "use server";
 
 import z from "zod";
+import { loginUser } from "./loginUser";
 
-const registrationValidationSchema = z.object({
-  name: z.string().min(2, "Name must be at least 2 characters long"),
-  email: z.email("Invalid email address"),
-  password: z.string().min(6, "Password must be at least 6 characters long"),
-  confirmPassword: z
-    .string()
-    .min(6, "Confirm Password must be at least 6 characters long")
-   
-}).refine((data: any) => data.password === data.confirmPassword, {
-      error: "Passwords do not match",
-      path:["confirmPassword"]
-    })
+const registrationValidationSchema = z
+  .object({
+    name: z.string().min(2, "Name must be at least 2 characters long"),
+    email: z.email("Invalid email address"),
+    password: z.string().min(6, "Password must be at least 6 characters long"),
+    confirmPassword: z
+      .string()
+      .min(6, "Confirm Password must be at least 6 characters long"),
+  })
+  .refine((data: any) => data.password === data.confirmPassword, {
+    error: "Passwords do not match",
+    path: ["confirmPassword"],
+  });
 
 export async function registerTourist(
   _currentState: any,
@@ -28,12 +30,10 @@ export async function registerTourist(
       email: formData.get("email"),
       password: formData.get("password"),
       confirmPassword: formData.get("confirmPassword"),
-    }
+    };
 
-    const validatedFields = registrationValidationSchema.safeParse(validationData);
-
-
-
+    const validatedFields =
+      registrationValidationSchema.safeParse(validationData);
 
     if (!validatedFields.success) {
       return {
@@ -62,10 +62,18 @@ export async function registerTourist(
         method: "POST",
         body: newFormData,
       }
-    ).then((res) => res.json());
+    );
+    const result = await res.json();
 
-    return res;
-  } catch (error) {
+    if (result.success) {
+      await loginUser(_currentState, formData);
+    }
+
+    return result;
+  } catch (error:any) {
+     if (error?.digest?.startsWith("NEXT_REDIRECT")) {
+      throw error;
+    }
     console.error("Registration failed:", error);
     return { success: false, message: "Registration failed" };
   }
