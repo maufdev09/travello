@@ -3,7 +3,7 @@
 
 import { parse } from "cookie";
 import { redirect } from "next/navigation";
-import z from "zod";
+import z, { success } from "zod";
 import jwt, { JwtPayload } from "jsonwebtoken";
 import {
   getDefaultDashboardRoute,
@@ -52,7 +52,7 @@ export async function loginUser(
       },
     });
 
-      const result = await res.json();
+    const result = await res.json();
 
     const setCookieHeaders = res.headers.getSetCookie();
 
@@ -79,7 +79,6 @@ export async function loginUser(
     if (!refreshTokenObject) {
       throw new Error("Tokens not found in cookies");
     }
-
 
     await setCookie("accessToken", accessTokenObject.accessToken, {
       secure: true,
@@ -110,8 +109,7 @@ export async function loginUser(
     const userRole: any = verifiedToken.role;
 
     if (!result.success) {
-      throw new Error(result.message || "Login failed");
-      
+      throw new Error(`${process.env.NODE_ENV ==== "development" ? 'Login failed': result.message }`);
     }
 
     if (redirectTo) {
@@ -121,17 +119,18 @@ export async function loginUser(
       } else {
         redirect(getDefaultDashboardRoute(userRole));
       }
-    }else{
+    } else {
       redirect(getDefaultDashboardRoute(userRole));
     }
-
- 
   } catch (error: any) {
     if (error?.digest?.startsWith("NEXT_REDIRECT")) {
       throw error;
     }
 
     console.error("login failed:", error);
-    return { error: "Login failed. Please try again." };
+    return {
+      success: false,
+      message: error.message,
+    };
   }
 }

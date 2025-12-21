@@ -11,6 +11,7 @@ function LoginForm({ redirect }: { redirect?: string }) {
   const [state, formAction, isPending] = useActionState(loginUser, null);
 
   console.log(state);
+
   return (
     <div>
       <form action={formAction}>
@@ -56,7 +57,7 @@ function LoginForm({ redirect }: { redirect?: string }) {
               </FieldDescription>
             )}
           </Field>
-          <Button type="submit" disabled={isPending}>
+          <Button className="cursor-pointer"  type="submit" disabled={isPending}>
             {isPending ? "Logging in..." : "Login"}
           </Button>
         </FieldGroup>

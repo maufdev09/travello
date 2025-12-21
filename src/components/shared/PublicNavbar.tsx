@@ -35,12 +35,12 @@ const PublicNavbar = async () => {
           ))}
         </nav>
 
-        <div className="hidden md:flex items-center space-x-2">
+        <div className="hidden md:flex items-center space-x-2 ">
           {accessToken ? (
             <LogoutButton />
           ) : (
-            <Link href="/login" className="text-lg font-medium">
-              <Button>Login</Button>
+            <Link href="/login" className="text-lg font-medium ">
+              <Button className=" cursor-pointer">Login</Button>
             </Link>
           )}
         </div>
@@ -68,12 +68,12 @@ const PublicNavbar = async () => {
                   </Link>
                 ))}
                 <div className="border-t pt-4 flex flex-col space-y-4">
-                  <div className="flex justify-center"></div>
+                  <div className="flex justify-center "></div>
                   {accessToken ? (
                     <LogoutButton />
                   ) : (
                     <Link href="/login" className="text-lg font-medium">
-                      <Button>Login</Button>
+                      <Button  className=" cursor-pointer">Login</Button>
                     </Link>
                   )}
                 </div>

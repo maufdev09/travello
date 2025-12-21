@@ -2,10 +2,12 @@ import {
   Card,
   CardContent,
   CardDescription,
+  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
 import LoginForm from "@/components/ui/loginForm";
+import Link from "next/link";
 import React from "react";
 
 async function  LoginPage({
@@ -24,15 +26,18 @@ async function  LoginPage({
       <div className="w-full max-w-xl">
         <Card>
           <CardHeader>
-            <CardTitle>Create Account</CardTitle>
+            <CardTitle>Login your Account</CardTitle>
             <CardDescription>
-              Fill in the details below to Create Account .
+              Fill in the details below to Login .
             </CardDescription>
           </CardHeader>
           <CardContent>
 
             <LoginForm redirect={params.redirect} />
           </CardContent>
+          <CardFooter>
+            <p> Don&apos;t have an account please? <Link href="/registration" className=" text-blue-500 hover:underline">Register</Link></p>
+          </CardFooter>
         </Card>
       </div>
     </div>

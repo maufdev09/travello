@@ -83,7 +83,7 @@ function RegistrationForm() {
               </FieldDescription>
             )}
           </Field>
-          <Button type="submit" disabled={isPending}>
+          <Button className="cursor-pointer" type="submit" disabled={isPending}>
             {isPending ? "Registering..." : "Create Account"}
           </Button>
         </FieldGroup>

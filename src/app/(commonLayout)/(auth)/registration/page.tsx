@@ -7,6 +7,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import RegistrationForm from "@/components/ui/registrationForm";
+import Link from "next/link";
 
 function RegisterPage() {
 
@@ -26,7 +27,7 @@ function RegisterPage() {
           </CardContent>  
 
           <CardFooter>
-            <p> Already have an account? <a href="/login" className=" text-blue-500 hover:underline">Login</a></p>
+            <p> Already have an account? <Link href="/login" className=" text-blue-500 hover:underline">Login</Link></p>
           </CardFooter>
         </Card>
       </div>
