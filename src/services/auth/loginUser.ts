@@ -9,7 +9,6 @@ import {
   getDefaultDashboardRoute,
   isValidRedirectForRole,
 } from "@/lib/authUtils";
-import { th } from "zod/locales";
 import { setCookie } from "./tokenHandler";
 
 const loginValidationSchema = z.object({
@@ -109,28 +108,27 @@ export async function loginUser(
     const userRole: any = verifiedToken.role;
 
     if (!result.success) {
-      throw new Error(`${process.env.NODE_ENV ==== "development" ? 'Login failed': result.message }`);
+      throw new Error(result.message || "Login failed");
     }
 
     if (redirectTo) {
       const requestedPath = redirectTo.toString();
       if (isValidRedirectForRole(requestedPath, userRole)) {
-        redirect(requestedPath);
+        redirect(`${requestedPath}?loggedIn=true`);
       } else {
-        redirect(getDefaultDashboardRoute(userRole));
+        redirect(`${getDefaultDashboardRoute(userRole)}?loggedIn=true`);
       }
     } else {
-      redirect(getDefaultDashboardRoute(userRole));
+      redirect(`${getDefaultDashboardRoute(userRole)}?loggedIn=true`);
     }
   } catch (error: any) {
     if (error?.digest?.startsWith("NEXT_REDIRECT")) {
       throw error;
     }
 
-    console.error("login failed:", error);
     return {
       success: false,
-      message: error.message,
+      message:`${process.env.NODE_ENV === "development" ?  error.message:'Login failed incorrect email or password' }`
     };
   }
 }

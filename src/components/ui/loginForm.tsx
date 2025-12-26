@@ -3,15 +3,21 @@
 import { Field, FieldDescription, FieldGroup, FieldLabel } from "./field";
 import { Input } from "./input";
 import { Button } from "./button";
-import { useActionState } from "react";
+import { useActionState, useEffect } from "react";
 import { loginUser } from "@/services/auth/loginUser";
 import { getFieldError } from "@/lib/getErrorFields";
+import { toast } from "sonner";
 
 function LoginForm({ redirect }: { redirect?: string }) {
   const [state, formAction, isPending] = useActionState(loginUser, null);
 
-  console.log(state);
+useEffect(()=>{
 
+  if (state && !state.success && state.message) {
+toast.error(state.message)
+    
+  }
+},[state])
   return (
     <div>
       <form action={formAction}>
