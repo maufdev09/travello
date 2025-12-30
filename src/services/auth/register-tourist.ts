@@ -3,6 +3,7 @@
 
 import z from "zod";
 import { loginUser } from "./loginUser";
+import { serverFetch } from "@/lib/serverfetch";
 
 const registrationValidationSchema = z
   .object({
@@ -56,10 +57,9 @@ export async function registerTourist(
     const newFormData = new FormData();
     newFormData.append("data", JSON.stringify(registerDtata));
 
-    const res = await fetch(
+    const res = await serverFetch.post(
       "http://localhost:5000/api/v1/user/create-tourist",
       {
-        method: "POST",
         body: newFormData,
       }
     );
@@ -70,8 +70,8 @@ export async function registerTourist(
     }
 
     return result;
-  } catch (error:any) {
-     if (error?.digest?.startsWith("NEXT_REDIRECT")) {
+  } catch (error: any) {
+    if (error?.digest?.startsWith("NEXT_REDIRECT")) {
       throw error;
     }
     console.error("Registration failed:", error);
