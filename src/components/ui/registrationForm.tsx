@@ -5,18 +5,16 @@ import { Input } from "./input";
 import { Button } from "./button";
 import { useActionState, useEffect } from "react";
 import { registerTourist } from "@/services/auth/register-tourist";
-import { getFieldError } from "@/lib/getErrorFields";
 import { toast } from "sonner";
+import InputFieldError from "../shared/InputFieldError";
 
 function RegistrationForm() {
   const [state, formAction, isPending] = useActionState(registerTourist, null);
-useEffect(()=>{
-
-  if (state && !state.success && state.message) {
-toast.error(state.message)
-    
-  }
-},[state])
+  useEffect(() => {
+    if (state && !state.success && state.message) {
+      toast.error(state.message);
+    }
+  }, [state]);
 
   return (
     <div>
@@ -34,11 +32,7 @@ toast.error(state.message)
               required
             />
 
-            {getFieldError("name", state) && (
-              <FieldDescription className=" text-red-500 text-sm mt-1">
-                {getFieldError("name", state)}
-              </FieldDescription>
-            )}
+            <InputFieldError field="name" state={state} />
           </Field>
 
           <Field>
@@ -51,11 +45,7 @@ toast.error(state.message)
               required
             />
 
-            {getFieldError("email", state) && (
-              <FieldDescription className=" text-red-500 text-sm mt-1">
-                {getFieldError("email", state)}
-              </FieldDescription>
-            )}
+            <InputFieldError field="email" state={state} />
           </Field>
 
           <Field>
@@ -68,11 +58,7 @@ toast.error(state.message)
               required
             />
 
-            {getFieldError("password", state) && (
-              <FieldDescription className=" text-red-500 text-sm mt-1">
-                {getFieldError("password", state)}
-              </FieldDescription>
-            )}
+            <InputFieldError field="password" state={state} />
           </Field>
 
           <Field>
@@ -85,11 +71,7 @@ toast.error(state.message)
               required
             />
 
-            {getFieldError("confirmPassword", state) && (
-              <FieldDescription className=" text-red-500 text-sm mt-1">
-                {getFieldError("confirmPassword", state)}
-              </FieldDescription>
-            )}
+            <InputFieldError field="confirmPassword" state={state} />
           </Field>
           <Button className="cursor-pointer" type="submit" disabled={isPending}>
             {isPending ? "Registering..." : "Create Account"}

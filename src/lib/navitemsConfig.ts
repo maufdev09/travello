@@ -32,10 +32,33 @@ export const getCommonNavItems = (role: userRole): NavSection[] => {
         },
       ],
     },
+    
   ];
 };
 export const guideNavItems: NavSection[] = [];
-export const adminNavItems: NavSection[] = [];
+export const adminNavItems: NavSection[] = [
+
+
+{
+      title: "User Management",
+      items: [
+        {
+          title: "Admin Management",
+          href: "/admin/dashboard/admin-management",
+          icon: "Admin", // ✅ String
+          roles: ["TOURIST", "GUIDE", "ADMIN"],
+        },
+        {
+          title: "Guide Management",
+          href: "/admin/dashboard/guide-management",
+          icon: "Admin", // ✅ String
+          roles: ["TOURIST", "GUIDE", "ADMIN"],
+        },
+      ],
+    },
+  
+  
+];
 export const touristNavItems: NavSection[] = [];
 
 export const getNavItemsByRole = (role: userRole): NavSection[] => {

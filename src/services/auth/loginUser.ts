@@ -3,7 +3,6 @@
 
 import { parse } from "cookie";
 import { redirect } from "next/navigation";
-import z, { success } from "zod";
 import jwt, { JwtPayload } from "jsonwebtoken";
 import {
   getDefaultDashboardRoute,
@@ -11,11 +10,10 @@ import {
 } from "@/lib/authUtils";
 import { setCookie } from "./tokenHandler";
 import { serverFetch } from "@/lib/serverfetch";
+import { zodValidator } from "@/lib/zodValidator";
+import { loginValidationSchema } from "@/zod/authValidation";
 
-const loginValidationSchema = z.object({
-  email: z.email("Invalid email address"),
-  password: z.string().min(6, "Password must be at least 6 characters long"),
-});
+
 
 export async function loginUser(
   _currentState: any,
@@ -27,26 +25,21 @@ export async function loginUser(
     const redirectTo = formData.get("redirect") as string | null;
     let accessTokenObject: null | any = null;
     let refreshTokenObject: null | any = null;
-    const loginData = {
+    const payload = {
       email: formData.get("email") as string,
       password: formData.get("password") as string,
     };
 
-    const validatedFields = loginValidationSchema.safeParse(loginData);
-
-    if (!validatedFields.success) {
-      return {
-        success: false,
-        errors: validatedFields.error.issues.map((issue) => ({
-          field: issue.path[0],
-          message: issue.message,
-        })),
-      };
+    if (zodValidator(payload, loginValidationSchema).success === false) {
+      return zodValidator(payload, loginValidationSchema);
     }
+    const validatedFields = zodValidator(payload, loginValidationSchema).data;
 
-    const res = await serverFetch.post("http://localhost:5000/api/v1/auth/login", {
-      body: JSON.stringify(loginData),
-    
+    const res = await serverFetch.post("/auth/login", {
+      body: JSON.stringify(validatedFields),
+      headers: {
+        "Content-Type": "application/json",
+      }, 
     });
 
     const result = await res.json();
@@ -126,7 +119,11 @@ export async function loginUser(
 
     return {
       success: false,
-      message:`${process.env.NODE_ENV === "development" ?  error.message:'Login failed incorrect email or password' }`
+      message: `${
+        process.env.NODE_ENV === "development"
+          ? error.message
+          : "Login failed incorrect email or password"
+      }`,
     };
   }
 }

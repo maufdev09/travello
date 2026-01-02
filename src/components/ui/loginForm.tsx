@@ -5,27 +5,21 @@ import { Input } from "./input";
 import { Button } from "./button";
 import { useActionState, useEffect } from "react";
 import { loginUser } from "@/services/auth/loginUser";
-import { getFieldError } from "@/lib/getErrorFields";
 import { toast } from "sonner";
+import InputFieldError from "../shared/InputFieldError";
 
 function LoginForm({ redirect }: { redirect?: string }) {
   const [state, formAction, isPending] = useActionState(loginUser, null);
 
-useEffect(()=>{
-
-  if (state && !state.success && state.message) {
-toast.error(state.message)
-    
-  }
-},[state])
+  useEffect(() => {
+    if (state && !state.success && state.message) {
+      toast.error(state.message);
+    }
+  }, [state]);
   return (
     <div>
       <form action={formAction}>
-{
-        redirect && (
-          <input type="hidden" name="redirect" value={redirect} />
-        )
-}
+        {redirect && <input type="hidden" name="redirect" value={redirect} />}
 
         <FieldGroup>
           <div className=" grid grid-cols-1 md:grid-cols-2 gap-4"></div>
@@ -40,11 +34,7 @@ toast.error(state.message)
               required
             />
 
-            {getFieldError("email", state) && (
-              <FieldDescription className=" text-red-500 text-sm mt-1">
-                {getFieldError("email", state)}
-              </FieldDescription>
-            )}
+            <InputFieldError field="email" state={state} />
           </Field>
 
           <Field>
@@ -57,13 +47,9 @@ toast.error(state.message)
               required
             />
 
-            {getFieldError("password", state) && (
-              <FieldDescription className=" text-red-500 text-sm mt-1">
-                {getFieldError("password", state)}
-              </FieldDescription>
-            )}
+            <InputFieldError field="password" state={state} />
           </Field>
-          <Button className="cursor-pointer"  type="submit" disabled={isPending}>
+          <Button className="cursor-pointer" type="submit" disabled={isPending}>
             {isPending ? "Logging in..." : "Login"}
           </Button>
         </FieldGroup>

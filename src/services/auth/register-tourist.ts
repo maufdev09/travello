@@ -4,20 +4,10 @@
 import z from "zod";
 import { loginUser } from "./loginUser";
 import { serverFetch } from "@/lib/serverfetch";
+import { zodValidator } from "@/lib/zodValidator";
+import { registrationTouristValidationSchema } from "@/zod/authValidation";
 
-const registrationValidationSchema = z
-  .object({
-    name: z.string().min(2, "Name must be at least 2 characters long"),
-    email: z.email("Invalid email address"),
-    password: z.string().min(6, "Password must be at least 6 characters long"),
-    confirmPassword: z
-      .string()
-      .min(6, "Confirm Password must be at least 6 characters long"),
-  })
-  .refine((data: any) => data.password === data.confirmPassword, {
-    error: "Passwords do not match",
-    path: ["confirmPassword"],
-  });
+
 
 export async function registerTourist(
   _currentState: any,
@@ -26,39 +16,38 @@ export async function registerTourist(
   // Registration logic here
 
   try {
-    const validationData = {
+    const payload = {
       name: formData.get("name"),
       email: formData.get("email"),
       password: formData.get("password"),
       confirmPassword: formData.get("confirmPassword"),
     };
 
-    const validatedFields =
-      registrationValidationSchema.safeParse(validationData);
-
-    if (!validatedFields.success) {
-      return {
-        success: false,
-        errors: validatedFields.error.issues.map((issue) => ({
-          field: issue.path[0],
-          message: issue.message,
-        })),
-      };
+    if (zodValidator(payload, registrationTouristValidationSchema).success === false) {
+      return zodValidator(payload, registrationTouristValidationSchema);
     }
 
+    const validatedField: any = zodValidator(
+      payload,
+      registrationTouristValidationSchema
+    ).data;
+
     const registerDtata = {
-      password: formData.get("password") as string,
+      password: validatedField.get("password") as string,
       data: {
-        email: formData.get("email") as string,
-        name: formData.get("name") as string,
+        email: validatedField.get("email") as string,
+        name: validatedField.get("name") as string,
       },
     };
 
     const newFormData = new FormData();
     newFormData.append("data", JSON.stringify(registerDtata));
+    if (formData.get("file")) {
+      newFormData.append("file", formData.get("file") as Blob);
+    }
 
     const res = await serverFetch.post(
-      "http://localhost:5000/api/v1/user/create-tourist",
+      "/user/create-tourist",
       {
         body: newFormData,
       }
