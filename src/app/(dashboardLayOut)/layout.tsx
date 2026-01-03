@@ -4,7 +4,7 @@ import DashboardSidebar from "@/components/modules/Dashboard/DashboardSidebar";
 
 function DashboardLayout({ children }: { children: React.ReactNode }) {
   return (
-    <div className="flex h-screen overflow-hidden">
+    <div className="flex h-screen overflow-hidden w-full">
       <DashboardSidebar />
 
       <div className="flex flex-1 flex-col overflow-hidden">

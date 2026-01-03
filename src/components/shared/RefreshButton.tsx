@@ -7,7 +7,7 @@ import { Button } from "../ui/button";
 import { useRouter } from "next/navigation";
 
 interface RefreshButtonProps {
-  size: "sm" | "default" | "lg";
+  size?: "sm" | "default" | "lg";
   variant?: "default" | "outline" | "ghost";
   showLabel?: boolean;
 }

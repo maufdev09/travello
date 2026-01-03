@@ -1,3 +1,5 @@
+"use client";
+
 import React, { use, useTransition } from "react";
 import {
   Select,
