@@ -18,6 +18,7 @@ export const guidesColumns: Column<IGuide>[] = [
         photo={guide.profilePhoto}
       />
     ),
+    sortKey: "name",
   },
   {
     header: "Languages",
@@ -72,7 +73,8 @@ export const guidesColumns: Column<IGuide>[] = [
         {guide.dailyRate ? `৳${guide.dailyRate}` : "N/A"}
       </span>
     ),
-  },
+ sortKey: "dailyRate", 
+ },
   {
     header: "Verification",
     accessor: (guide) => (

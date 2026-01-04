@@ -35,7 +35,7 @@ const GuidesFormDaialog = ({
   );
 
   const [state, formAction, isPending] = useActionState(
-    isEdit ? updateGuide.bind(null, guide?.id!) : createGuide,
+    isEdit ? updateGuide.bind(null, guide.id!) : createGuide,
     null
   );
 

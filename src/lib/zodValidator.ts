@@ -1,21 +1,23 @@
-import { ZodObject } from "zod";
+import { z } from "zod";
 
-export const zodValidator = <T>(payload: T, schema: ZodObject<any>) => {
-  const validatedPayload = schema.safeParse(payload);
+export const zodValidator = <T>(
+  payload: T,
+  schema: z.ZodTypeAny
+) => {
+  const result = schema.safeParse(payload);
 
-  if (!validatedPayload.success) {
+  if (!result.success) {
     return {
       success: false,
-      errors: validatedPayload.error.issues.map((issue) => {
-        return {
-          field: issue.path[0],
-          message: issue.message,
-        };
-      }),
+      errors: result.error.issues.map((issue) => ({
+        field: issue.path[issue.path.length - 1] ?? "root",
+        message: issue.message,
+      })),
     };
   }
+
   return {
     success: true,
-    data: validatedPayload.data,
+    data: result.data,
   };
 };

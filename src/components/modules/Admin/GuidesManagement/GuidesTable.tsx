@@ -9,17 +9,19 @@ import { toast } from "sonner";
 import GuidesFormDaialog from "./GuidesFormDaialog";
 import DeleteConfirmationDialog from "@/components/shared/DeleteConfirmationDialog";
 import { guidesColumns } from "./GuidesColums";
+import GuideDetailViewDialog from "./GuideDetailViewDailog";
 
 interface GuidesTableProps {
   guides: IGuide[];
 }
 
 const GuidesTable = ({ guides }: GuidesTableProps) => {
+  
   const router = useRouter();
   const [, startTransition] = useTransition();
 
   const [deletingGuide, setDeletingGuide] = useState<IGuide | null>(null);
-//   const [viewingGuide, setViewingGuide] = useState<IGuide | null>(null);
+  const [viewingGuide, setViewingGuide] = useState<IGuide | null>(null);
   const [editingGuide, setEditingGuide] = useState<IGuide | null>(null);
   const [isDeleting, setIsDeleting] = useState(false);
 
@@ -29,9 +31,9 @@ const GuidesTable = ({ guides }: GuidesTableProps) => {
     });
   };
 
-  // const handleView = (guide: IGuide) => {
-  //   setViewingGuide(guide);
-  // };
+  const handleView = (guide: IGuide) => {
+    setViewingGuide(guide);
+  };
 
   const handleEdit = (guide: IGuide) => {
     setEditingGuide(guide);
@@ -63,8 +65,8 @@ const GuidesTable = ({ guides }: GuidesTableProps) => {
       <ManagementTable
         data={guides}
         columns={guidesColumns}
-        onView={() => {}}
-        onEdit={() => {}}
+        onView={handleView}
+        onEdit={handleEdit}
         onDelete={handleDelete}
         getRowKey={(guide) => guide.id!}
         empytyMessage="No guides found"
@@ -82,11 +84,12 @@ const GuidesTable = ({ guides }: GuidesTableProps) => {
       /> 
 
       {/* View Guide Detail Dialog */}
-       {/* <GuideViewDetailDialog
+       <GuideDetailViewDialog
         open={!!viewingGuide}
         onClose={() => setViewingGuide(null)}
         guide={viewingGuide}
-      />  */}
+
+      /> 
 
       {/* Delete Confirmation Dialog */}
       <DeleteConfirmationDialog

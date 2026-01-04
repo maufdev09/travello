@@ -17,7 +17,7 @@ export function formatDateTime(date: string | Date): string {
   });
 }
 
-export function queryStringFormatter(searchParamsObj: {
+export function   queryStringFormatter(searchParamsObj: {
   [key: string]: string | string[] | undefined;
 }): string {
   let queryString = "";

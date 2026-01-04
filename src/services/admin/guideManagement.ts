@@ -9,33 +9,36 @@ export async function createGuide(
   formData: FormData
 ): Promise<any> {
   try {
+
+
+
     // 1️⃣ Raw payload from form
     const payload = {
       name: formData.get("name"),
-      email: formData.get("email"),
       password: formData.get("password"),
+      email: formData.get("email"),
       confirmPassword: formData.get("confirmPassword"),
       bio: formData.get("bio"),
       contactNumber: formData.get("contactNumber"),
       address: formData.get("address"),
-      dailyRate: formData.get("dailyRate"),
+      dailyRate: Number(formData.get("dailyRate")),
       languages: formData.getAll("languages"),
       expertise: formData.getAll("expertise"),
     };
 
     // 2️⃣ Zod validation
 
-    const validationResult = zodValidator(payload, createGuideZodSchema);
-
-    if (validationResult?.success === false) {
-      return validationResult;
+//     
+ if (zodValidator(payload, createGuideZodSchema).success === false) {
+      return zodValidator(payload, createGuideZodSchema);
     }
 
-    const validatedField: any = validationResult.data;
 
-    if (!validatedField) {
-      throw new Error("Invalid form data");
-    }
+    const validatedField:any = zodValidator(payload, createGuideZodSchema).data
+
+
+
+  
 
     // 3️⃣ API payload structure (backend expected)
     const registerData = {
@@ -54,13 +57,15 @@ export async function createGuide(
       },
     };
 
+    console.log(`$`);
+    
+
     // 4️⃣ Multipart form-data
     const newFormData = new FormData();
     newFormData.append("data", JSON.stringify(registerData));
 
-    const file = formData.get("file");
-    if (file) {
-      newFormData.append("file", file as Blob);
+   if (formData.get("file")) {
+      newFormData.append("file", formData.get("file") as Blob);
     }
 
     // 5️⃣ API call
@@ -73,14 +78,10 @@ export async function createGuide(
     return result;
   } catch (error: any) {
     console.error("Guide registration failed:", error);
-    return {
-      success: false,
-      message: `${
-        process.env.NODE_ENV === "development"
-          ? error.message
-          : "Something went wrong"
-      }`,
-    };
+   
+     console.error("Registration failed:", error);
+    return { success: false, message: "Registration failed" };
+    
   }
 }
 
@@ -92,6 +93,7 @@ export async function updateGuide(
   try {
     // 1️⃣ Build payload from formData
     const payload = {
+      data: {
       name: formData.get("name"),
       bio: formData.get("bio"),
       contactNumber: formData.get("contactNumber"),
@@ -101,6 +103,7 @@ export async function updateGuide(
         : undefined,
       languages: formData.getAll("languages"),
       expertise: formData.getAll("expertise"),
+      }
     };
 
     // 2️⃣ Zod validation
@@ -151,7 +154,6 @@ export async function getAllGuides(queryString?: string) {
     );
 
     const result = await response.json();
-    console.log(result);
     return result;
   } catch (error: any) {
     console.log(error);

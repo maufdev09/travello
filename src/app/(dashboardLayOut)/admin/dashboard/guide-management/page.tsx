@@ -1,5 +1,5 @@
 
-
+import GuideFilter from "@/components/modules/Admin/GuidesManagement/GuideFilter";
 import GuidesManagementHeader from "@/components/modules/Admin/GuidesManagement/GuidesManagementHaeder";
 import GuidesTable from "@/components/modules/Admin/GuidesManagement/GuidesTable";
 import RefreshButton from "@/components/shared/RefreshButton";
@@ -7,6 +7,7 @@ import SearchFiilter from "@/components/shared/SearchFiilter";
 import SelectFilter from "@/components/shared/SelectFilter";
 import TablePagination from "@/components/shared/TablePagination";
 import { TableSkeleton } from "@/components/shared/TableSkeleton";
+import { queryStringFormatter } from "@/lib/formatters";
 import { getAllGuides } from "@/services/admin/guideManagement";
 import { Suspense } from "react";
 
@@ -18,9 +19,10 @@ const AdminGuidesManagementPage = async ({
 
 
   const searchParamsObj = await searchParams;
-  const guidesResult = await getAllGuides();
-
-  // const queryString = queryStringFormatter(searchParamsObj);
+  const queryString = queryStringFormatter(searchParamsObj);
+  const guidesResult = await getAllGuides(queryString);
+  console.log("giid",guidesResult);
+  
   // example: ?searchTerm=John&verificationStatus=APPROVED
 
 
@@ -34,34 +36,15 @@ const AdminGuidesManagementPage = async ({
       <GuidesManagementHeader guide={guidesResult.data} />
 
       {/* Filters */}
-      <div className="flex items-center gap-4">
-
-        <SearchFiilter
-          paramName="searchTerm"
-          placeholder="Search guides..."
-        />
-
-        <SelectFilter
-          paramName="verificationStatus"
-          placeholder="Filter by status"
-          options={[
-            { label: "Pending", value: "PENDING" },
-            { label: "Approved", value: "APPROVED" },
-            { label: "Rejected", value: "REJECTED" },
-          ]}
-        />
-        
-
-        <RefreshButton />
-      </div>
+    <GuideFilter />
 
       {/* Table */}
-      <Suspense fallback={<TableSkeleton columns={8} rows={10} />}>
+      <Suspense fallback={<TableSkeleton columns={18} rows={10} />}>
         <GuidesTable guides={guidesResult?.data} />
 
         <TablePagination
           currentPage={guidesResult?.meta?.page}
-          totalPages={totalPages}
+          totalPages={ totalPages}
         />
       </Suspense>
     </div>

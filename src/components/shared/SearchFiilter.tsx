@@ -24,8 +24,9 @@ const SearchFiilter = ({
   useEffect(() => {
     const params = new URLSearchParams(searchParams.toString());
 
-    const initialValue = searchParams.get(paramName);
-    if (debouncedValue === initialValue) {
+
+    const initialValue = searchParams.get(paramName) || "";
+        if (debouncedValue === initialValue) {
       return;
     }
     if (debouncedValue) {

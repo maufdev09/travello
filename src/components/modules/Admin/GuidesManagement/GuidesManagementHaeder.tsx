@@ -8,7 +8,7 @@ import { useState, useTransition } from "react";
 import { IGuide } from "@/types/userInterface";
 
 interface GuidesManagementHeaderProps {
-  guide?: IGuide;
+  guide?: IGuide[];
 }
 
 const GuidesManagementHeader = ({ guide }: GuidesManagementHeaderProps) => {
