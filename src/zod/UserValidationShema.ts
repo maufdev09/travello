@@ -5,9 +5,7 @@ import { z } from "zod";
 ===================================================== */
 
 const requiredString = (label: string) =>
-  z
-    .string()
-    .min(1, { message: `${label} is required` });
+  z.string().min(1, { message: `${label} is required` });
 
 const optionalString = (label: string) =>
   z
@@ -35,6 +33,26 @@ export const createUserZodSchema = z.object({
   }),
 });
 
+export const createAdminZodSchema = z
+  .object({
+    password: z
+      .string()
+      .min(6, { message: "Password must be at least 6 characters long" }),
+
+    name: requiredString("Name"),
+
+    email: z.email({ message: "Please provide a valid email address" }),
+    confirmPassword: z.string().min(6, {
+      message: "Confirm password must be at least 6 characters long",
+    }),
+
+    address: optionalString("Address"),
+  })
+  .refine((payload) => payload.password === payload.confirmPassword, {
+    message: "Password and confirm password do not match",
+    path: ["data", "confirmPassword"],
+  });
+
 /* =====================================================
    UPDATE TOURIST
 ===================================================== */
@@ -61,36 +79,33 @@ export const createGuideZodSchema = z
       .string()
       .min(6, { message: "Password must be at least 6 characters long" }),
 
-      name: requiredString("Guide name"),
+    name: requiredString("Guide name"),
 
-      email: z.email({ message: "Please provide a valid email address" }),
+    email: z.email({ message: "Please provide a valid email address" }),
 
-      confirmPassword: z
-        .string()
-        .min(6, { message: "Confirm password must be at least 6 characters long" }),
+    confirmPassword: z.string().min(6, {
+      message: "Confirm password must be at least 6 characters long",
+    }),
 
-      profilePhoto: optionalString("Profile photo"),
-      bio: optionalString("Bio"),
+    profilePhoto: optionalString("Profile photo"),
+    bio: optionalString("Bio"),
 
-      languages: z.array(z.string()).optional(),
-      expertise: z.array(z.string()).optional(),
+    languages: z.array(z.string()).optional(),
+    expertise: z.array(z.string()).optional(),
 
-      dailyRate: z
-        .number()
-        .int({ message: "Daily rate must be an integer" })
-        .positive({ message: "Daily rate must be greater than 0" })
-        .optional(),
+    dailyRate: z
+      .number()
+      .int({ message: "Daily rate must be an integer" })
+      .positive({ message: "Daily rate must be greater than 0" })
+      .optional(),
 
-      contactNumber: optionalString("Contact number"),
-      address: optionalString("Address"),
-  
-  }).refine(
-    (payload) => payload.password === payload.confirmPassword,
-    {
-      message: "Password and confirm password do not match",
-      path: ["data", "confirmPassword"],
-    }
-  );
+    contactNumber: optionalString("Contact number"),
+    address: optionalString("Address"),
+  })
+  .refine((payload) => payload.password === payload.confirmPassword, {
+    message: "Password and confirm password do not match",
+    path: ["data", "confirmPassword"],
+  });
 
 /* =====================================================
    UPDATE GUIDE
@@ -111,9 +126,7 @@ export const updateGuideZodSchema = z.object({
       .positive({ message: "Daily rate must be greater than 0" })
       .optional(),
 
-    verificationStatus: z
-      .enum(["PENDING", "APPROVED", "REJECTED"])
-      .optional(),
+    verificationStatus: z.enum(["PENDING", "APPROVED", "REJECTED"]).optional(),
 
     contactNumber: optionalString("Contact number"),
     address: optionalString("Address"),

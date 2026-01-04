@@ -97,5 +97,6 @@ export const guidesColumns: Column<IGuide>[] = [
   {
     header: "Joined",
     accessor: (guide) => <DateCell date={guide.createdAt} />,
+    sortKey: "createdAt",
   },
 ];

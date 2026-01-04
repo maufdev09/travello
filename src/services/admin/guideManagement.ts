@@ -57,7 +57,6 @@ export async function createGuide(
       },
     };
 
-    console.log(`$`);
     
 
     // 4️⃣ Multipart form-data
