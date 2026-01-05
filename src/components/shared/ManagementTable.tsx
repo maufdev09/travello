@@ -55,7 +55,7 @@ function ManagementTable<T>({
   empytyMessage = " No data found",
   isRefreshing = false,
 }: ManagementTableProps<T>) {
-  const hasActions = onView || onEdit || onDelete;
+  const hasActions = onDelete;
   const router = useRouter();
   const searchParams = useSearchParams();
   const [, startTransition] = useTransition();
@@ -162,7 +162,7 @@ function ManagementTable<T>({
                           </Button>
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="end">
-                          {onView && (
+                          {/* {onView && (
                             <DropdownMenuItem onClick={() => onView(item)}>
                               <Eye className="mr-2 h-4 w-4" />
                               View
@@ -173,7 +173,7 @@ function ManagementTable<T>({
                               <Edit className="mr-2 h-4 w-4" />
                               Edit
                             </DropdownMenuItem>
-                          )}
+                          )} */}
                           {onDelete && (
                             <DropdownMenuItem
                               onClick={() => onDelete(item)}

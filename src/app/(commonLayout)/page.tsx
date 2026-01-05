@@ -5,6 +5,8 @@ import TrendingDestinations from "@/components/modules/Home/TrendingDestinations
 import Head from "next/head";
 
 export default function Home() {
+
+  
   return (
     <>
       <Head>

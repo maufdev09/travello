@@ -1,35 +1,54 @@
-"use server";
+/* eslint-disable @typescript-eslint/no-explicit-any */
+"use server"
 
 import { UserInfo } from "@/types/userInterface";
 import jwt, { JwtPayload } from "jsonwebtoken";
 import { getCookie } from "./tokenHandler";
+import { serverFetch } from "@/lib/serverfetch";
 
 export const getUserInfo = async (): Promise<UserInfo | null> => {
-  try {
-  const accessToken = await getCookie("accessToken");
+ let userInfo: UserInfo | any;
+    try {
 
-    if (!accessToken) {
-      return null;
-    }
+        const response = await serverFetch.get("/auth/me", {
+            cache: "force-cache",
+            next: { tags: ["user-info"] }
+        })
 
-    const verifiedToken = jwt.verify(
-      accessToken,
-      process.env.JWT_SECRET as string
-    ) as JwtPayload;
+        const result = await response.json();
 
-    if (!verifiedToken ) {
-      return null;
-    }
+        if (result.success) {
+            const accessToken = await getCookie("accessToken");
 
-    const userInfo:UserInfo={
-      name:verifiedToken?.name,
-      email:verifiedToken.email,
-      role:verifiedToken.role,
-    } 
+            if (!accessToken) {
+                throw new Error("No access token found");
+            }
 
-    return userInfo
+            const verifiedToken = jwt.verify(accessToken, process.env.JWT_SECRET as string) as JwtPayload;
+
+            userInfo = {
+                name: verifiedToken.name || "Unknown User",
+                email: verifiedToken.email,
+                role: verifiedToken.role,
+            }
+        }
+
+        userInfo = {
+            name: result.data.admin?.name || result.data.guide?.name || result.data.tourist?.name || result.data.name || "Unknown User",
+            ...result.data
+        };
+      
+
+
+
+        return userInfo;
   } catch (error) {
     // token expired / invalid / malformed
-    return null;
+     return {
+            id: "",
+            name: "Unknown User",
+            email: "",
+            role: "TOURIST",
+        };
   }
 };

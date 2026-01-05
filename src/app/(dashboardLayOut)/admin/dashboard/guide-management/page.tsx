@@ -21,7 +21,6 @@ const AdminGuidesManagementPage = async ({
   const searchParamsObj = await searchParams;
   const queryString = queryStringFormatter(searchParamsObj);
   const guidesResult = await getAllGuides(queryString);
-  console.log("giid",guidesResult);
   
   // example: ?searchTerm=John&verificationStatus=APPROVED
 

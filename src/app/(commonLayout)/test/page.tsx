@@ -2,10 +2,12 @@ import DashboardSkeleton from '@/components/shared/DashBoardSkeleton'
 import ManagementPageLoader from '@/components/shared/ManagementPageLoader'
 import TravelLoader from '@/components/shared/TravelLoader'
 import { getAllAdmins } from '@/services/admin/adminManagement'
+import { getAllTourists } from '@/services/admin/touristManagement'
+import { getAllListings } from '@/services/listing/listingManagement'
 import React from 'react'
 
 const page = async() => {
-    const adminsResult = await getAllAdmins();
+    const adminsResult = await getAllListings();
 
     console.log(adminsResult);
     

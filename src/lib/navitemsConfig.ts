@@ -32,40 +32,50 @@ export const getCommonNavItems = (role: userRole): NavSection[] => {
         },
       ],
     },
-    
   ];
 };
-export const guideNavItems: NavSection[] = [];
+export const guideNavItems: NavSection[] = [
+  {
+    title: "Listing Management",
+    items: [
+      {
+        title: "Listing Management",
+        href: "/guide/dashboard/listing-management",
+        icon: "Admin", // ✅ String
+        roles: ["TOURIST", "GUIDE", "ADMIN"],
+      },
+
+    ],
+  },
+];
 export const adminNavItems: NavSection[] = [
-
-
-{
-      title: "User Management",
-      items: [
-        {
-          title: "Admin Management",
-          href: "/admin/dashboard/admin-management",
-          icon: "Admin", // ✅ String
-          roles: ["TOURIST", "GUIDE", "ADMIN"],
-        },
-        {
-          title: "Guide Management",
-          href: "/admin/dashboard/guide-management",
-          icon: "Admin", // ✅ String
-          roles: ["TOURIST", "GUIDE", "ADMIN"],
-        },
-        {
-          title: "Tourist Management",
-          href: "/admin/dashboard/tourist-management",
-          icon: "Admin", // ✅ String
-          roles: ["TOURIST", "GUIDE", "ADMIN"],
-        },
-      ],
-    },
-  
+  {
+    title: "User Management",
+    items: [
+      {
+        title: "Admin Management",
+        href: "/admin/dashboard/admin-management",
+        icon: "Admin", // ✅ String
+        roles: ["TOURIST", "GUIDE", "ADMIN"],
+      },
+      {
+        title: "Guide Management",
+        href: "/admin/dashboard/guide-management",
+        icon: "Admin", // ✅ String
+        roles: ["TOURIST", "GUIDE", "ADMIN"],
+      },
+      {
+        title: "Tourist Management",
+        href: "/admin/dashboard/tourist-management",
+        icon: "Admin", // ✅ String
+        roles: ["TOURIST", "GUIDE", "ADMIN"],
+      },
+    ],
+  },
+];
+export const touristNavItems: NavSection[] = [
   
 ];
-export const touristNavItems: NavSection[] = [];
 
 export const getNavItemsByRole = (role: userRole): NavSection[] => {
   const commonNavItems = getCommonNavItems(role);
@@ -74,9 +84,9 @@ export const getNavItemsByRole = (role: userRole): NavSection[] => {
     case "ADMIN":
       return [...commonNavItems, ...adminNavItems];
     case "GUIDE":
-      return [...commonNavItems, ...touristNavItems];
-    case "TOURIST":
       return [...commonNavItems, ...guideNavItems];
+    case "TOURIST":
+      return [...commonNavItems, ...touristNavItems];
     default:
       return [];
   }

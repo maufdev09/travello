@@ -33,10 +33,10 @@ export async function registerTourist(
     ).data;
 
     const registerDtata = {
-      password: validatedField.get("password") as string,
+      password: validatedField.password as string,
       data: {
-        email: validatedField.get("email") as string,
-        name: validatedField.get("name") as string,
+        email: validatedField.email as string,
+        name: validatedField.name as string,
       },
     };
 

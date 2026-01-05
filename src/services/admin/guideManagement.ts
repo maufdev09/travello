@@ -128,7 +128,6 @@ export async function updateGuide(
     });
 
     const result = await response.json();
-    console.log(result);
 
     return result;
   } catch (error: any) {
@@ -171,7 +170,6 @@ export async function getGuideById(id: string) {
   try {
     const response = await serverFetch.get(`/user/guides/${id}`);
     const result = await response.json();
-    console.log(result);
     return result;
   } catch (error: any) {
     console.log(error);

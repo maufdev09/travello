@@ -65,8 +65,7 @@ const GuidesTable = ({ guides }: GuidesTableProps) => {
       <ManagementTable
         data={guides}
         columns={guidesColumns}
-        onView={handleView}
-        onEdit={handleEdit}
+     
         onDelete={handleDelete}
         getRowKey={(guide) => guide.id!}
         empytyMessage="No guides found"
