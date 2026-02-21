@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" role="img" aria-label="Travello logo">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0ea5a4" />
+      <stop offset="100%" stop-color="#1d4ed8" />
+    </linearGradient>
+    <linearGradient id="sun" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#fde68a" />
+      <stop offset="100%" stop-color="#f59e0b" />
+    </linearGradient>
+  </defs>
+
+  <rect x="12" y="12" width="232" height="232" rx="52" fill="url(#bg)" />
+  <circle cx="176" cy="84" r="26" fill="url(#sun)" />
+  <path d="M48 174l44-54 29 36 22-28 65 46H48z" fill="#ffffff" opacity=".92" />
+  <path d="M56 196h144c0-28-21-50-48-50-15 0-27 6-36 16-8-7-18-12-30-12-17 0-30 8-39 21 5 7 8 16 9 25z" fill="#e0f2fe" opacity=".95" />
+  <path d="M116 72l22 10-22 10-10 22-10-22-22-10 22-10 10-22z" fill="#ffffff" />
+</svg>

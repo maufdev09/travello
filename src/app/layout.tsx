@@ -18,7 +18,23 @@ const geistMono = Geist_Mono({
  
 export const metadata: Metadata = {
   title: "Travello",
-  description: "Your personal travel companion ",
+  description: "Your personal travel companion",
+  icons: {
+    icon: [{ url: "/travello-logo.svg", type: "image/svg+xml" }],
+    shortcut: "/travello-logo.svg",
+    apple: "/travello-logo.svg",
+  },
+  openGraph: {
+    title: "Travello",
+    description: "Your personal travel companion",
+    images: ["/travello-logo.svg"],
+  },
+  twitter: {
+    card: "summary",
+    title: "Travello",
+    description: "Your personal travel companion",
+    images: ["/travello-logo.svg"],
+  },
 };
 
 export default function RootLayout({
