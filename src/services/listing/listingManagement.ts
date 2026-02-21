@@ -8,6 +8,9 @@ import {
 } from "@/zod/ListingValidationSchema";
 import { getUserInfo } from "../auth/getUserInfo";
 
+const BACKEND_API_URL =
+  process.env.NEXT_PUBLIC_BASE_API_URL || "http://localhost:5000/api/v1";
+
 /* -------------------------------------------------------------------------- */
 /*                               CREATE LISTING                                */
 /* -------------------------------------------------------------------------- */
@@ -17,12 +20,12 @@ export async function createListing(
 ) {
   try {
 
-        const getUser= await getUserInfo()
-    
-        console.log(getUser?.guide?.id);
-        
+    const getUser = await getUserInfo()
+
+    console.log(getUser?.guide?.id);
+
     // 🔥 THIS IS THE KEY FIX
-    
+
     const payload = JSON.parse(formData.get("data") as string);
 
     console.log("SERVER PAYLOAD 👉", payload);
@@ -181,11 +184,13 @@ export async function getAllListingsPublic(queryString?: string) {
 /* -------------------------------------------------------------------------- */
 export async function getListingSuggestion(suggestion: string) {
   try {
-    const res = await serverFetch.post("/listing/suggestion", {
+    const res = await fetch(`${BACKEND_API_URL}/listing/suggestion`, {
+      method: "POST",
       body: JSON.stringify({ suggestion }),
       headers: {
         "Content-Type": "application/json",
       },
+      cache: "no-store",
     });
 
     return await res.json();
@@ -197,6 +202,47 @@ export async function getListingSuggestion(suggestion: string) {
         process.env.NODE_ENV === "development"
           ? error.message
           : "Failed to get suggestions",
+    };
+  }
+}
+
+
+export async function createBooking(payload: {
+  guests: number;
+  totalPrice: number;
+  currency: string;
+  listingId: string;
+  userId: string;
+  guideId: string;
+  bookingDateId: string;
+}) {
+  try {
+    const res = await serverFetch.post("/booking/create-bookings", {
+      body: JSON.stringify(payload),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    const data = await res.json();
+
+    console.log(data);
+
+
+    if (!data.success) {
+      throw new Error(data?.message || "Booking failed");
+    }
+
+    return data;
+  } catch (error: any) {
+    console.error("Booking creation failed:", error);
+
+    return {
+      success: false,
+      message:
+        process.env.NODE_ENV === "development"
+          ? error.message
+          : "Failed to create booking",
     };
   }
 }

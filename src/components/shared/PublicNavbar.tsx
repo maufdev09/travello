@@ -7,11 +7,9 @@ import LogoutButton from "./LogoutButton";
 
 const PublicNavbar = async () => {
   const navItems = [
-    { href: "#", label: "Consultation" },
-    { href: "#", label: "Health Plans" },
-    { href: "#", label: "Medicine" },
-    { href: "#", label: "Diagnostics" },
-    { href: "#", label: "NGOs" },
+    { href: "/", label: "Home" },
+    { href: "/listings", label: "Listings" },
+    { href: "/ai-listings", label: "AI Listings" },
   ];
 
   const accessToken = await getCookie("accessToken");
@@ -20,7 +18,7 @@ const PublicNavbar = async () => {
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur  dark:bg-background/95">
       <div className="container mx-auto flex h-16 items-center justify-between px-4">
         <Link href="/" className="flex items-center space-x-2">
-          <span className="text-xl font-bold text-primary">PH Doc</span>
+          <span className="text-xl font-bold text-primary">Travello</span>
         </Link>
 
         <nav className="hidden md:flex items-center space-x-6 text-sm font-medium">
@@ -37,11 +35,21 @@ const PublicNavbar = async () => {
 
         <div className="hidden md:flex items-center space-x-2 ">
           {accessToken ? (
-            <LogoutButton />
+            <>
+              <Link href="/dashboard" className="text-lg font-medium">
+                <Button variant="outline" className="cursor-pointer">Dashboard</Button>
+              </Link>
+              <LogoutButton />
+            </>
           ) : (
-            <Link href="/login" className="text-lg font-medium ">
-              <Button className=" cursor-pointer">Login</Button>
-            </Link>
+            <>
+              <Link href="/login" className="text-lg font-medium ">
+                <Button className="cursor-pointer">Login</Button>
+              </Link>
+              <Link href="/registration" className="text-lg font-medium ">
+                <Button variant="outline" className="cursor-pointer">Register</Button>
+              </Link>
+            </>
           )}
         </div>
 
@@ -70,11 +78,21 @@ const PublicNavbar = async () => {
                 <div className="border-t pt-4 flex flex-col space-y-4">
                   <div className="flex justify-center "></div>
                   {accessToken ? (
-                    <LogoutButton />
+                    <>
+                      <Link href="/dashboard" className="text-lg font-medium">
+                        <Button variant="outline" className="cursor-pointer">Dashboard</Button>
+                      </Link>
+                      <LogoutButton />
+                    </>
                   ) : (
-                    <Link href="/login" className="text-lg font-medium">
-                      <Button  className=" cursor-pointer">Login</Button>
-                    </Link>
+                    <>
+                      <Link href="/login" className="text-lg font-medium">
+                        <Button className="cursor-pointer">Login</Button>
+                      </Link>
+                      <Link href="/registration" className="text-lg font-medium">
+                        <Button variant="outline" className="cursor-pointer">Register</Button>
+                      </Link>
+                    </>
                   )}
                 </div>
               </nav>

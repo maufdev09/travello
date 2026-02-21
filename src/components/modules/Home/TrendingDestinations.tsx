@@ -3,6 +3,7 @@
 import DestinationCard from "@/components/shared/DestinationCard";
 import { Button } from "@/components/ui/button";
 import { Destination } from "@/types/DestinationType";
+import Link from "next/link";
 import imgImage from "../../../asset/images/ourStory1.jpg";
 import imgImage1 from "../../../asset/images/ourStory2.jpg";
 import imgImage2 from "../../../asset/images/ourStory3.jpg";
@@ -60,7 +61,7 @@ export default function TrendingDestinations() {
         </div>
         
         {/* Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 mb-8 md:mb-12">
+        <div className=" grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 mb-8 md:mb-12">
           {destinations.map((destination, index) => (
             <DestinationCard key={index} destination={destination} />
           ))}
@@ -68,11 +69,12 @@ export default function TrendingDestinations() {
         
         {/* View All Button */}
         <div className="flex justify-center">
-          <Button 
+          <Button
+            asChild
             size="lg"
             className="bg-[#1a4d6f] hover:bg-[#1a4d6f]/90 text-white rounded-full px-8 shadow-lg"
           >
-            View All Destinations
+            <Link href="/listings">View All Destinations</Link>
           </Button>
         </div>
       </div>

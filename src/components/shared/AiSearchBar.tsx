@@ -7,16 +7,20 @@ import React, { useState } from "react";
 interface AISearchBarProps {
   placeholder?: string;
   onSearch?: (query: string) => void;
+  initialValue?: string;
 }
 
 export function AISearchBar({
   placeholder = "Describe your dream trip (e.g., 'Quiet beaches in Italy with good wine')...",
   onSearch,
+  initialValue = "",
 }: AISearchBarProps) {
-  const [query, setQuery] = useState("");
+  const [query, setQuery] = useState(initialValue);
 
   const handleSearch = () => {
     if (onSearch) onSearch(query);
+    
+    
   };
 
   return (
@@ -42,6 +46,12 @@ export function AISearchBar({
           type="text"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              e.preventDefault();
+              handleSearch();
+            }
+          }}
           placeholder={placeholder}
           className="flex-1 bg-transparent border-none outline-none px-4 text-travello-deepBlue placeholder:text-gray-400 text-lg font-medium"
         />

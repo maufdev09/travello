@@ -17,6 +17,7 @@ export default function ListingCard({ listing }: ListingCardProps) {
   const handleBookNow = () => {
     router.push(`/book-now?id=${listing.id}`);
   };
+  
 
   return (
     <Card className="w-full max-w-sm">

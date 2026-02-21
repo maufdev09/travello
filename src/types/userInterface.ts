@@ -1,9 +1,10 @@
 import { userRole } from "@/lib/authUtils";
 
-export interface UserInfo{
-    name:string;
-    email:string;
-    role:userRole
+export interface UserInfo {
+  id: string;
+  name: string;
+  email: string;
+  role: userRole
 }
 
 export interface IAvailability {

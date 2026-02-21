@@ -4,17 +4,20 @@ import Image from "next/image";
 import { Card, CardContent } from "../ui/card";
 import { ArrowRight, LocationEditIcon } from "lucide-react";
 import { Destination } from "@/types/DestinationType";
+import Link from "next/link";
 
 
 
 function DestinationCard({ destination }: { destination: Destination }) {
   return (
-    <Card className="group relative overflow-hidden rounded-2xl border-0 aspect-[468/500] bg-gray-900">
+    <Card  className="group relative overflow-hidden 
+    
+    
+    rounded-2xl border-0 aspect-[468/500] bg-gray-900">
       {/* Background Image */}
       {destination.image && (
         <Image
           src={destination.image}
-          
           alt={destination.title}
           className="absolute inset-0 w-full h-full object-cover"
 
@@ -50,8 +53,12 @@ function DestinationCard({ destination }: { destination: Destination }) {
             </span>
 
             <button className="flex items-center gap-2 text-white text-xs md:text-sm hover:gap-3 transition-all">
-              <span>Explore</span>
+              {/* <span>Explore</span> */}
+              <Link className="flex items-center gap-2" href="/listings">Explore
+
+              
               <ArrowRight className="w-4 h-4" />
+              </Link>
             </button>
           </div>
         </div>

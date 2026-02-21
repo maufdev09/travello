@@ -1,3 +1,11 @@
+export interface AvailabilitySlot {
+  id: string;
+  startAt?: string;
+  endAt?: string;
+  note?: string;
+  booked?: boolean;
+}
+
 export interface Listing {
   id: string;
   title: string;
@@ -20,9 +28,9 @@ export interface Listing {
     profilePhoto: string;
     bio: string;
   };
-  availabilities: any[]; // Define properly if needed
-  bookings: any[];
-  reviews: any[];
+  availabilities: AvailabilitySlot[];
+  bookings: unknown[];
+  reviews: unknown[];
   createdAt: string;
   updatedAt: string;
 }

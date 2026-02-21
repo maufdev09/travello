@@ -7,7 +7,7 @@ import { getCookie } from "./tokenHandler";
 import { serverFetch } from "@/lib/serverfetch";
 
 export const getUserInfo = async (): Promise<UserInfo | null> => {
- let userInfo: UserInfo | any;
+    let userInfo: UserInfo | any;
     try {
 
         const response = await serverFetch.get("/auth/me", {
@@ -37,18 +37,18 @@ export const getUserInfo = async (): Promise<UserInfo | null> => {
             name: result.data.admin?.name || result.data.guide?.name || result.data.tourist?.name || result.data.name || "Unknown User",
             ...result.data
         };
-      
+
 
 
 
         return userInfo;
-  } catch (error) {
-    // token expired / invalid / malformed
-     return {
+    } catch (error) {
+        // token expired / invalid / malformed
+        return {
             id: "",
             name: "Unknown User",
             email: "",
             role: "TOURIST",
         };
-  }
+    }
 };

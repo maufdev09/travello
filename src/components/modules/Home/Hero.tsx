@@ -5,6 +5,7 @@ import { useRef } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { ChevronDown } from "lucide-react";
 import { AISearchBar } from "@/components/shared/AiSearchBar";
+import { useRouter } from "next/navigation";
 
 interface HeroSectionProps {
   backgroundUrl: string;
@@ -19,6 +20,7 @@ export function HeroSection({
   title = "Discover Your Next Adventure",
   subtitle = "Experience the world's most breathtaking destinations curated just for you.",
 }: HeroSectionProps) {
+  const router = useRouter();
   const ref = useRef<HTMLDivElement>(null);
   const { scrollY } = useScroll();
 
@@ -84,7 +86,13 @@ export function HeroSection({
           transition={{ duration: 0.8, delay: 0.6 }}
           className="w-full max-w-2xl mb-10 mt-6"
         >
-          <AISearchBar />
+          <AISearchBar
+            onSearch={(query) => {
+              const trimmed = query.trim();
+              if (!trimmed) return;
+              router.push(`/ai-listings?q=${encodeURIComponent(trimmed)}`);
+            }}
+          />
         </motion.div>
 
         {/* Subtitle */}

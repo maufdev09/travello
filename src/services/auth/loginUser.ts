@@ -102,15 +102,22 @@ export async function loginUser(
       throw new Error(result.message || "Login failed");
     }
 
+    const buildLoggedInRedirect = (targetPath: string) => {
+      const baseUrl = process.env.NEXT_PUBLIC_FRONTEND_URL || "http://localhost:3000";
+      const url = new URL(targetPath, baseUrl);
+      url.searchParams.set("loggedIn", "true");
+      return `${url.pathname}${url.search}`;
+    };
+
     if (redirectTo) {
       const requestedPath = redirectTo.toString();
       if (isValidRedirectForRole(requestedPath, userRole)) {
-        redirect(`${requestedPath}?loggedIn=true`);
+        redirect(buildLoggedInRedirect(requestedPath));
       } else {
-        redirect(`${getDefaultDashboardRoute(userRole)}?loggedIn=true`);
+        redirect(buildLoggedInRedirect(getDefaultDashboardRoute(userRole)));
       }
     } else {
-      redirect(`${getDefaultDashboardRoute(userRole)}?loggedIn=true`);
+      redirect(buildLoggedInRedirect(getDefaultDashboardRoute(userRole)));
     }
   } catch (error: any) {
     if (error?.digest?.startsWith("NEXT_REDIRECT")) {
