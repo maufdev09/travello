@@ -45,11 +45,19 @@ export async function loginUser(
     const result = await res.json();
 
     const setCookieHeaders = res.headers.getSetCookie();
+    const rawSetCookieHeader = res.headers.get("set-cookie");
 
-    console.log("Set-Cookie Headers:", setCookieHeaders);
+    const normalizedCookieHeaders =
+      setCookieHeaders && setCookieHeaders.length > 0
+        ? setCookieHeaders.flatMap((cookie) =>
+            cookie.split(/,(?=[^;,\s]+=)/g)
+          )
+        : rawSetCookieHeader
+        ? rawSetCookieHeader.split(/,(?=[^;,\s]+=)/g)
+        : [];
 
-    if (setCookieHeaders && setCookieHeaders.length > 0) {
-      setCookieHeaders.forEach((cookie: string) => {
+    if (normalizedCookieHeaders.length > 0) {
+      normalizedCookieHeaders.forEach((cookie: string) => {
         const parsedCookie = parse(cookie);
 
         if (parsedCookie["accessToken"]) {
@@ -89,7 +97,7 @@ export async function loginUser(
 
     const verifiedToken: JwtPayload | string = jwt.verify(
       accessTokenObject.accessToken,
-      process.env.JWT_SECRET as string
+      process.env.JWT_SECRET?.trim() as string
     );
 
     if (typeof verifiedToken === "string") {

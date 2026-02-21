@@ -9,7 +9,8 @@ import {
 import { getUserInfo } from "../auth/getUserInfo";
 
 const BACKEND_API_URL =
-  process.env.NEXT_PUBLIC_BASE_API_URL || "http://localhost:5000/api/v1";
+  process.env.NEXT_PUBLIC_BASE_API_URL?.trim() ||
+  "http://localhost:5000/api/v1";
 
 /* -------------------------------------------------------------------------- */
 /*                               CREATE LISTING                                */

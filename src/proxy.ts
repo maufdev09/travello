@@ -20,7 +20,7 @@ export async function proxy(request: NextRequest) {
   if (accessToken) {
     const verifiedToken: JwtPayload | string = jwt.verify(
       accessToken,
-      process.env.JWT_SECRET as string
+      process.env.JWT_SECRET?.trim() as string
     );
 
     if (typeof verifiedToken === "string") {

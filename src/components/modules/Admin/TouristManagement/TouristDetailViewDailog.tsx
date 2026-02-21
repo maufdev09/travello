@@ -19,22 +19,7 @@ import {
   Calendar,
 } from "lucide-react";
 import InfoRow from "@/components/shared/InfowRow";
-
-/* -------------------------------------------------------------------------- */
-/*                                   TYPES                                    */
-/* -------------------------------------------------------------------------- */
-export interface ITourist {
-  id: string;
-  name: string;
-  email: string;
-  contactNumber?: string | null;
-  address?: string | null;
-  profilePhoto?: string | null;
-  preferences?: string | null;
-  isDeleted: boolean;
-  createdAt?: string;
-  updatedAt?: string;
-}
+import { ITourist } from "@/types/userInterface";
 
 interface TouristDetailViewDialogProps {
   open: boolean;
@@ -103,7 +88,7 @@ const TouristDetailViewDialog = ({
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 bg-muted/50 p-4 rounded-lg">
-                <InfoRow label="Tourist ID" value={tourist.id} />
+                <InfoRow label="Tourist ID" value={tourist.id ?? "N/A"} />
                 <InfoRow label="Role" value="Tourist" />
                 {tourist.preferences && (
                   <InfoRow

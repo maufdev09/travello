@@ -37,11 +37,12 @@ const TouristFormDialog = ({
   onSuccess,
   tourist,
 }: TouristFormDialogProps) => {
-  const isEdit = !!tourist;
+  const editTouristId = tourist?.id;
+  const isEdit = !!editTouristId;
 
   const [state, formAction, isPending] = useActionState(
     isEdit
-      ? updateTouristByAdmin.bind(null, tourist!.id)
+      ? updateTouristByAdmin.bind(null, editTouristId)
       : createTouristByAdmin,
     null
   );

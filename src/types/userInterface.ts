@@ -4,7 +4,10 @@ export interface UserInfo {
   id: string;
   name: string;
   email: string;
-  role: userRole
+  role: userRole;
+  admin?: IAdmin | null;
+  guide?: IGuide | null;
+  tourist?: ITourist | null;
 }
 
 export interface IAvailability {

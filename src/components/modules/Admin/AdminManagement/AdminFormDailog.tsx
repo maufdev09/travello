@@ -39,11 +39,12 @@ const AdminFormDialog = ({
   onSuccess,
   admin,
 }: AdminFormDialogProps) => {
-  const isEdit = !!admin;
+  const editAdminId = admin?.id;
+  const isEdit = !!editAdminId;
 
   const [state, formAction, isPending] = useActionState(
     isEdit
-      ? updateAdminByAdmin.bind(null, admin!.id)
+      ? updateAdminByAdmin.bind(null, editAdminId)
       : createAdminByAdmin,
     null
   );

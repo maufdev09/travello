@@ -8,11 +8,11 @@ import { Button } from "../ui/button";
 interface ManagementPageHeaderPorops {
   title: string;
   description: string;
-      icon?: LucideIcon;
-meta:{
+  icon?: LucideIcon;
+  meta?: {
     label: string;
     value: number;
-  }[]
+  }[];
   actions?: {
     icon?: LucideIcon;
     label: string;

@@ -1,5 +1,10 @@
 import PaymentResultPage from "@/components/shared/PaymentResultPage";
+import { Suspense } from "react";
 
 export default function PaymentFailPage() {
-  return <PaymentResultPage type="fail" />;
+  return (
+    <Suspense fallback={null}>
+      <PaymentResultPage type="fail" />
+    </Suspense>
+  );
 }

@@ -4,6 +4,7 @@ import { DateCell } from "@/components/shared/cell/Datecell";
 import { StatusBadgeCell } from "@/components/shared/cell/statusBadgecell";
 import { UserInfoCell } from "@/components/shared/cell/userInfocell";
 import { Column } from "@/components/shared/ManagementTable";
+import { IAdmin } from "@/types/userInterface";
 import { ShieldCheck, ShieldAlert } from "lucide-react";
 
 /* -------------------------------------------------------------------------- */
