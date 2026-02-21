@@ -17,6 +17,9 @@ const geistMono = Geist_Mono({
 });
  
 export const metadata: Metadata = {
+  metadataBase: new URL(
+    process.env.NEXT_PUBLIC_FRONTEND_URL || "https://travello-ashy.vercel.app"
+  ),
   title: "Travello",
   description: "Your personal travel companion",
   icons: {
